@@ -144,3 +144,60 @@ class _CardMatchingGameState extends State<CardMatchingGame> {
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('🌸 Flower Card Matching Game 🌸'),
+        backgroundColor: Colors.green.shade400,
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('🌟 Score: $score', style: TextStyle(fontSize: 20, color: Colors.green)),
+                Text('⏳ Time: $timeElapsed s', style: TextStyle(fontSize: 20, color: Colors.green)),
+              ],
+            ),
+          ),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: gridSize,
+              ),
+              itemCount: cards.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () => flipCard(index),
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    decoration: BoxDecoration(
+                      color: cards[index].isMatched ? Colors.lightGreenAccent : Colors.green.shade100,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Text(
+                        cards[index].isFaceUp ? cards[index].front : cards[index].back,
+                        style: TextStyle(fontSize: 32.0),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+}
+
